@@ -36,7 +36,29 @@ class CreateCinemaSchema extends Migration
      */
     public function up()
     {
-        throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
+        Schema::create('movie', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->boolean('state');
+            $table->date('first_start');
+        });
+
+        Schema::create('administration_show', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->boolean('state'); // booked
+            $table->integer('price');
+            $table->integer('movie_id')->unsigned()->nullable();
+            $table->foreign('movie_id')->references('id')->on('movie');
+        });
+
+        Schema::create('show', function ($table) {
+            $table->increments('id');
+            $table->date('start');
+            $table->string('Pricing');
+            $table->integer('administration_show_id')->unsigned()->nullable();
+            $table->foreign('administration_show')->references('id')->on('administration_show');
+        });
     }
 
     /**
